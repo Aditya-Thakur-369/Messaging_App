@@ -15,7 +15,7 @@ class _CallLogState extends State<CallLog> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('callLogs'),
+        title: const Text('Calls'),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -16,27 +17,37 @@ class _ProfileState extends State<Profile> {
       ),
       body: Column(
         children: [
+          DottedBorder(
+            dashPattern: const [15, 5],
+            borderType: BorderType.Circle,
+            child: const CircleAvatar(
+              radius: 60,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             child: ListTile(
-              title: Text("H O M E"),
-              leading: Icon(Icons.home),
+              title: const Text("H O M E"),
+              leading: const Icon(Icons.home),
               onTap: () {},
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             child: ListTile(
-              title: Text("S E T T I N G S"),
-              leading: Icon(Icons.settings),
+              title: const Text("S E T T I N G S"),
+              leading: const Icon(Icons.settings),
               onTap: () {},
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             child: ListTile(
-              title: Text("L O G O U T"),
-              leading: Icon(Icons.logout),
+              title: const Text("L O G O U T"),
+              leading: const Icon(Icons.logout),
               onTap: () {},
             ),
           )

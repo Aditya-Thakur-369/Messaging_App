@@ -1,8 +1,8 @@
 import 'package:chat_app/app/controller/auth/bloc/auth_bloc.dart';
-import 'package:chat_app/app/utils/widgets/continue_with.dart';
-import 'package:chat_app/app/utils/widgets/my_button.dart';
-import 'package:chat_app/app/utils/widgets/my_square_tile.dart';
-import 'package:chat_app/app/utils/widgets/my_textfield.dart';
+import 'package:chat_app/app/utils/components/continue_with.dart';
+import 'package:chat_app/app/utils/components/my_button.dart';
+import 'package:chat_app/app/utils/components/my_square_tile.dart';
+import 'package:chat_app/app/utils/components/my_textfield.dart';
 import 'package:chat_app/app/utils/constants/app_theme.dart';
 import 'package:chat_app/app/utils/constants/text_constants.dart';
 import 'package:chat_app/app/utils/constants/validators.dart';

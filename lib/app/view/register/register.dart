@@ -1,6 +1,6 @@
 import 'package:chat_app/app/controller/auth/bloc/auth_bloc.dart';
-import 'package:chat_app/app/utils/widgets/my_button.dart';
-import 'package:chat_app/app/utils/widgets/my_textfield.dart';
+import 'package:chat_app/app/utils/components/my_button.dart';
+import 'package:chat_app/app/utils/components/my_textfield.dart';
 import 'package:chat_app/app/utils/constants/validators.dart';
 import 'package:chat_app/app/view/login/login.dart';
 import 'package:chat_app/app/view/upload/uploadimgae.dart';
