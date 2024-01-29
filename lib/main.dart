@@ -1,6 +1,6 @@
 import 'package:chat_app/app/controller/auth/bloc/auth_bloc.dart';
-import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/controller/home/bloc/home_bloc.dart';
+import 'package:chat_app/app/controller/search/bloc/search_bloc.dart';
 import 'package:chat_app/app/utils/constants/app_theme.dart';
 import 'package:chat_app/app/view/home/home.dart';
 import 'package:chat_app/app/view/onboard/onboard.dart';
@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +22,7 @@ void main() async {
           create: (context) => AuthBloc(),
         ),
         BlocProvider(
-          create: (context) => ChatBloc(),
+          create: (context) => SearchBloc(),
         ),
         BlocProvider(
           create: (context) => HomeBloc(),
