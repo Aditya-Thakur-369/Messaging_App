@@ -1,10 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: no_leading_underscores_for_local_identifiers
-import 'package:chat_app/app/controller/search/bloc/search_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:chat_app/app/controller/search/bloc/search_bloc.dart';
+import 'package:chat_app/app/model/user_model.dart';
+
 class Search extends StatefulWidget {
-  const Search({Key? key}) : super(key: key);
+  UserModel? userModel;
+  Search({
+    Key? key,
+    this.userModel,
+  }) : super(key: key);
 
   @override
   State<Search> createState() => _SearchState();
@@ -72,8 +79,8 @@ class _SearchState extends State<Search> {
                         onTap: () {},
                         child: ListTile(
                           leading: CircleAvatar(
-                            child: Image.network(searchResult[index]['image']),
-                          ),
+                              // child: Image.network(searchResult[index]['image']),
+                              ),
                           title: Text(searchResult[index]['name']),
                           subtitle: Text(searchResult[index]['email']),
                           trailing: const Icon(Icons.message),

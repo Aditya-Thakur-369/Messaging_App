@@ -1,6 +1,8 @@
+import 'package:chat_app/app/controller/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/app/model/user_model.dart';
 import 'package:chat_app/app/view/search/Search.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Chats extends StatefulWidget {
   const Chats({Key? key}) : super(key: key);
@@ -10,7 +12,8 @@ class Chats extends StatefulWidget {
 }
 
 class _ChatsState extends State<Chats> {
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  UserModel? userModel;
 
   @override
   void initState() {
@@ -19,20 +22,28 @@ class _ChatsState extends State<Chats> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chats'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Search(),
-              ));
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthenticatedSuccessState) {
+          userModel = state.userModel;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chats'),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            BlocProvider.of<AuthBloc>(context).add(AuthenticatedCheckEvent());
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Search(userModel: userModel),
+                ));
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.blue,
+        ),
       ),
     );
   }

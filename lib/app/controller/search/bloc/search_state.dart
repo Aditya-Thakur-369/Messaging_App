@@ -27,3 +27,4 @@ class SearchError extends SearchState {
 
   SearchError({required this.error});
 }
+

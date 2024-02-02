@@ -17,6 +17,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       PerformSearchEvent event, Emitter<SearchState> emit) async {
     emit(SearchLoading());
     try {
+      searchResult = [];
       await FirebaseFirestore.instance
           .collection("Users")
           .where("name", isEqualTo: event.searchText)

@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:chat_app/app/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   User? user;
 
   AuthBloc() : super(AuthInitial()) {
+    on<AuthenticatedCheckEvent>(authenticatedCheckEvent);
     on<UpdateUserDataEvent>(updateUserDataEvent);
     on<LoginpagePageNavigateEvent>(loginpagePageNavigateEvent);
     on<RegisterPageNavigateEvent>(registerPageNavigateEvent);
@@ -120,5 +122,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       'lastSeen': DateTime.now().toUtc(),
       'uid': uid,
     });
+  }
+
+  FutureOr<void> authenticatedCheckEvent(
+      AuthenticatedCheckEvent event, Emitter<AuthState> emit) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    try {
+      if (currentUser != null) {
+        DocumentSnapshot userData = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(currentUser.uid)
+            .get();
+        UserModel userModel = UserModel.fromJSON(userData);
+        emit(AuthenticatedSuccessState(userModel: userModel));
+      }
+    } catch (e) {
+      emit(AuthenticatedErrorState());
+    }
   }
 }

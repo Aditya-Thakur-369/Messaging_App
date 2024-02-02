@@ -43,3 +43,6 @@ class UpdateUserDataEvent extends AuthEvent {
     required this.imageUrl,
   });
 }
+
+class AuthenticatedCheckEvent extends AuthEvent{} 
+

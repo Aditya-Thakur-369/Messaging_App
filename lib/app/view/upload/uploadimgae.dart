@@ -1,12 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: library_private_types_in_public_api, sort_child_properties_last
 import 'dart:io';
-
 import 'package:awesome_widgets/awesome_widgets.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:chat_app/app/controller/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/app/utils/constants/text_constants.dart';
 import 'package:chat_app/app/view/home/home.dart';
