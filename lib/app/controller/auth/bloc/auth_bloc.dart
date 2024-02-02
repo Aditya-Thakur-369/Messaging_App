@@ -118,6 +118,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       'email': email,
       'image': imageUrl,
       'lastSeen': DateTime.now().toUtc(),
+      'uid': uid,
     });
   }
 }
