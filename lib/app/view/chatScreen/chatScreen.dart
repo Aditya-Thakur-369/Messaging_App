@@ -33,10 +33,10 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(80),
-              child: Image.network(
-                widget.friendImage,
-                height: 35,
-              ),
+              // child: Image.network(
+              //   widget.friendImage,
+              //   height: 35,
+              // ),
             ),
             const SizedBox(width: 5),
             Text(
@@ -77,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     return ListView.builder(
                       itemCount: snapshot.data.docs.length,
                       reverse: true,
-                      physics:const BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
                         bool isMe =
                             snapshot.data.docs[index]['senderId'] == user!.uid;

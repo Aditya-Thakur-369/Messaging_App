@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
   Home({super.key});
 
   List<Widget> screens = <Widget>[
-     Chats(),
+    const Chats(),
     const CallLog(),
     const Status(),
     const Profile(),

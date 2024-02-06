@@ -1,4 +1,5 @@
 import 'package:chat_app/app/controller/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/controller/home/bloc/home_bloc.dart';
 import 'package:chat_app/app/controller/search/bloc/search_bloc.dart';
 import 'package:chat_app/app/utils/constants/app_theme.dart';
@@ -27,6 +28,9 @@ void main() async {
         BlocProvider(
           create: (context) => HomeBloc(),
         ),
+        BlocProvider(
+          create: (context) => ChatBloc(),
+        )
       ],
       child: const MyApp(),
     ),
