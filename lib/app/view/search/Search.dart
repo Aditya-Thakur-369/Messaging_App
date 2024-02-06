@@ -1,16 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: no_leading_underscores_for_local_identifiers
+import 'package:chat_app/app/view/chatScreen/chatScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:chat_app/app/controller/search/bloc/search_bloc.dart';
-import 'package:chat_app/app/model/user_model.dart';
 
 class Search extends StatefulWidget {
-  UserModel? userModel;
   Search({
     Key? key,
-    this.userModel,
   }) : super(key: key);
 
   @override
@@ -76,7 +73,16 @@ class _SearchState extends State<Search> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                    friendId: searchResult[index]['uid'],
+                                    friendName: searchResult[index]['name'],
+                                    friendImage: searchResult[index]['image']),
+                              ));
+                        },
                         child: ListTile(
                           leading: CircleAvatar(
                               // child: Image.network(searchResult[index]['image']),

@@ -58,11 +58,4 @@ class UserDataUpdateErrorState extends AuthActionState {
   });
 }
 
-class AuthenticatedSuccessState extends AuthActionState {
-  final UserModel userModel;
-  AuthenticatedSuccessState({
-    required this.userModel,
-  });
-}
 
-class AuthenticatedErrorState extends AuthActionState {}

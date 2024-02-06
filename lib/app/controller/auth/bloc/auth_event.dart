@@ -44,5 +44,4 @@ class UpdateUserDataEvent extends AuthEvent {
   });
 }
 
-class AuthenticatedCheckEvent extends AuthEvent{} 
 
