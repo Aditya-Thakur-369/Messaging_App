@@ -8,6 +8,7 @@ part 'chat_state.dart';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(ChatInitial()) {
     on<ChatShareEvent>(chatShareEvent);
+    on<NavigateToSearchPageEvent>(navigateToSearchPage);
   }
 
   FutureOr<void> chatShareEvent(
@@ -52,6 +53,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .doc(event.currentId)
           .set({'last_msg': event.message});
     });
-    
+  }
+
+  FutureOr<void> navigateToSearchPage(
+      NavigateToSearchPageEvent event, Emitter<ChatState> emit) {
+    emit(NavigatedSearchPageDoneState());
   }
 }

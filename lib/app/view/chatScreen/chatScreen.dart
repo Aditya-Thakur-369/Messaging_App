@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/app/utils/components/message_textfield.dart';
 import 'package:chat_app/app/utils/components/single_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,10 +34,15 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(80),
-              // child: Image.network(
-              //   widget.friendImage,
-              //   height: 35,
-              // ),
+              child: CachedNetworkImage(
+                imageUrl: widget.friendImage,
+                placeholder: (conteext, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(
+                  Icons.error,
+                ),
+                height: 50,
+              ),
             ),
             const SizedBox(width: 5),
             Text(

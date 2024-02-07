@@ -14,3 +14,5 @@ class ChatShareEvent extends ChatEvent {
     required this.message,
   });
 }
+
+class NavigateToSearchPageEvent extends ChatEvent{}
