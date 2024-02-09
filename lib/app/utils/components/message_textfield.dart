@@ -40,10 +40,12 @@ class _MessageTextFieldState extends State<MessageTextField> {
                 onTap: () async {
                   String message = controller.text;
                   controller.clear();
-                  BlocProvider.of<ChatBloc>(context).add(ChatShareEvent(
-                      currentId: widget.currentId,
-                      friendId: widget.friendId,
-                      message: message));
+                  if (message.isNotEmpty) {
+                    BlocProvider.of<ChatBloc>(context).add(ChatShareEvent(
+                        currentId: widget.currentId,
+                        friendId: widget.friendId,
+                        message: message));
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8),

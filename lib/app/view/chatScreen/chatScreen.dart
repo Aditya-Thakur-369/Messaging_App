@@ -32,8 +32,8 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.teal,
         title: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(80),
+            CircleAvatar(
+              radius: 25,
               child: CachedNetworkImage(
                 imageUrl: widget.friendImage,
                 placeholder: (conteext, url) =>

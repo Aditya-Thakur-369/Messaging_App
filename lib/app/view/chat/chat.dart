@@ -60,13 +60,13 @@ class _ChatsState extends State<Chats> {
                       if (snapshot.hasData) {
                         var friend = snapshot.data;
                         return ListTile(
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(80),
+                          leading: CircleAvatar(
+                            radius: 40,
                             child: CachedNetworkImage(
                               imageUrl: friend['image'],
                               placeholder: (conteext, url) =>
-                                const  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>const Icon(
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => const Icon(
                                 Icons.error,
                               ),
                               height: 50,
@@ -108,7 +108,7 @@ class _ChatsState extends State<Chats> {
             BlocProvider.of<ChatBloc>(context).add(NavigateToSearchPageEvent());
           },
           child: Icon(Icons.add),
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.black,
         ),
       ),
     );
