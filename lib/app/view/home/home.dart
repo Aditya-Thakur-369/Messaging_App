@@ -34,7 +34,8 @@ class Home extends StatelessWidget {
               BottomNavigationBarItem(
                   icon: Icon(Ionicons.call_outline), label: 'calls'),
               BottomNavigationBarItem(
-                  icon: Icon(Ionicons.book_outline), label: 'story'),
+                  icon: Icon(Ionicons.people_circle_outline),
+                  label: 'contacts'),
               BottomNavigationBarItem(
                   icon: Icon(Ionicons.person_outline), label: 'profile')
             ],

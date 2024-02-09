@@ -1,3 +1,4 @@
+// ignore_for_file: sort_child_properties_last
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/view/chatScreen/chatScreen.dart';
@@ -92,7 +93,9 @@ class _ChatsState extends State<Chats> {
                           },
                         );
                       }
-                      return const LinearProgressIndicator();
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     },
                   );
                 },
@@ -107,7 +110,7 @@ class _ChatsState extends State<Chats> {
           onPressed: () {
             BlocProvider.of<ChatBloc>(context).add(NavigateToSearchPageEvent());
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           backgroundColor: Colors.black,
         ),
       ),

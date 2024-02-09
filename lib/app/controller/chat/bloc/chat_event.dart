@@ -16,3 +16,5 @@ class ChatShareEvent extends ChatEvent {
 }
 
 class NavigateToSearchPageEvent extends ChatEvent{}
+
+class BottomSheetEvent extends ChatEvent{}

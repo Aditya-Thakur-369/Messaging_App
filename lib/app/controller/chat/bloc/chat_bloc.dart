@@ -9,6 +9,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(ChatInitial()) {
     on<ChatShareEvent>(chatShareEvent);
     on<NavigateToSearchPageEvent>(navigateToSearchPage);
+    on<BottomSheetEvent>(bottomSheetEvent);
   }
 
   FutureOr<void> chatShareEvent(
@@ -58,5 +59,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   FutureOr<void> navigateToSearchPage(
       NavigateToSearchPageEvent event, Emitter<ChatState> emit) {
     emit(NavigatedSearchPageDoneState());
+  }
+
+  FutureOr<void> bottomSheetEvent(
+      BottomSheetEvent event, Emitter<ChatState> emit) {
+    emit(BottomSheetSuccessState());
   }
 }
