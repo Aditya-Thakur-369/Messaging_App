@@ -16,6 +16,8 @@ class MessageTextField extends StatefulWidget {
 
 class _MessageTextFieldState extends State<MessageTextField> {
   TextEditingController controller = TextEditingController();
+ 
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatBloc, ChatState>(
@@ -24,7 +26,8 @@ class _MessageTextFieldState extends State<MessageTextField> {
           showModalBottomSheet(
             backgroundColor: Colors.transparent,
             context: context,
-            builder: (context) => bottomSheet(context),
+            builder: (context) =>
+                bottomSheet(context, widget.currentId, widget.friendId),
           );
         }
       },

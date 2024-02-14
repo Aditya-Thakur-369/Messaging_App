@@ -8,3 +8,6 @@ final class ChatInitial extends ChatState {}
 class NavigatedSearchPageDoneState extends ChatState{}
 
 class BottomSheetSuccessState extends ChatState{}
+
+class GalleryImageSentSuccessState extends ChatState{}
+

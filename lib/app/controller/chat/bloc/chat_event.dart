@@ -15,6 +15,44 @@ class ChatShareEvent extends ChatEvent {
   });
 }
 
-class NavigateToSearchPageEvent extends ChatEvent{}
+class NavigateToSearchPageEvent extends ChatEvent {}
 
-class BottomSheetEvent extends ChatEvent{}
+class BottomSheetEvent extends ChatEvent {}
+
+class ChatImageShareEvent extends ChatEvent {
+  final String currentId;
+  final String friendId;
+  final String message;
+  ChatImageShareEvent({
+    required this.currentId,
+    required this.friendId,
+    required this.message,
+  });
+}
+
+class GalleryImagesSentEvent extends ChatEvent {
+  final String currentId;
+  final String friendId;
+  GalleryImagesSentEvent({
+    required this.currentId,
+    required this.friendId,
+  });
+}
+
+class LocationSentEvent extends ChatEvent {
+  final String currentId;
+  final String friendId;
+  LocationSentEvent({
+    required this.currentId,
+    required this.friendId,
+  });
+}
+
+class CameraImagesSentEvent extends ChatEvent {
+  final String currentId;
+  final String friendId;
+  CameraImagesSentEvent({
+    required this.currentId,
+    required this.friendId,
+  });
+}

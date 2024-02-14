@@ -88,6 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         bool isMe =
                             snapshot.data.docs[index]['senderId'] == user!.uid;
                         return SingleMessage(
+                          type:snapshot.data.docs[index]['type'] ,
                             message: snapshot.data.docs[index]['message'],
                             isMe: isMe);
                       },
