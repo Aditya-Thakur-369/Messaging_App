@@ -1,8 +1,8 @@
 import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/utils/components/bottomsheet.dart';
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 
 class MessageTextField extends StatefulWidget {
   final String currentId;
@@ -16,7 +16,8 @@ class MessageTextField extends StatefulWidget {
 
 class _MessageTextFieldState extends State<MessageTextField> {
   TextEditingController controller = TextEditingController();
- 
+
+  bool showEmoji = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +45,15 @@ class _MessageTextFieldState extends State<MessageTextField> {
                     labelText: "Type your Message",
                     fillColor: Colors.grey[100],
                     filled: true,
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          BlocProvider.of<ChatBloc>(context)
+                              .add(BottomSheetEvent());
+                        },
+                        icon: const Icon(Ionicons.attach)),
                     prefixIcon: IconButton(
-                      onPressed: () {
-                        BlocProvider.of<ChatBloc>(context)
-                            .add(BottomSheetEvent());
-                      },
-                      icon: const Icon(EneftyIcons.add_circle_bold),
+                      onPressed: () {},
+                      icon: const Icon(Ionicons.happy),
                     ),
                     border: OutlineInputBorder(
                         borderSide: const BorderSide(width: 0),
