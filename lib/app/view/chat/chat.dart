@@ -1,4 +1,4 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, avoid_unnecessary_containers
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/view/chatScreen/chatScreen.dart';

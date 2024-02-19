@@ -121,6 +121,4 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       'uid': uid,
     });
   }
-
- 
 }

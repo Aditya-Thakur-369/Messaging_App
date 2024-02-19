@@ -26,7 +26,5 @@ const String google = 'assets/images/google.png';
 
 const String facebook = 'assets/images/Facebook.png';
 
-
-
 //------------------------------------------
 

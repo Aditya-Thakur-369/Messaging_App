@@ -87,11 +87,33 @@ class _ChatScreenState extends State<ChatScreen> {
                       itemBuilder: (context, index) {
                         bool isMe =
                             snapshot.data.docs[index]['senderId'] == user!.uid;
-                        return SingleMessage(
-                            currentTime: snapshot.data.docs[index]['date'],
-                            type: snapshot.data.docs[index]['type'],
-                            message: snapshot.data.docs[index]['message'],
-                            isMe: isMe);
+                        final data = snapshot.data.docs[index];
+                        return Dismissible(
+                          key: UniqueKey(),
+                          onDismissed: (direction) async {
+                            await FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(user?.uid)
+                                .collection('messages')
+                                .doc(widget.friendId)
+                                .collection('chats')
+                                .doc(data.id)
+                                .delete();
+                            await FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(widget.friendId)
+                                .collection('messages')
+                                .doc(user?.uid)
+                                .collection('chats')
+                                .doc(data.id)
+                                .delete();
+                          },
+                          child: SingleMessage(
+                              currentTime: snapshot.data.docs[index]['date'],
+                              type: snapshot.data.docs[index]['type'],
+                              message: snapshot.data.docs[index]['message'],
+                              isMe: isMe),
+                        );
                       },
                     );
                   }

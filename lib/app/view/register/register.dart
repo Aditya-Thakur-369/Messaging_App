@@ -29,10 +29,11 @@ class _RegisterPageState extends State<RegisterPage> {
       listener: (context, state) {
         if (state is LoginPageNavigateDoneState) {
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginPage(),
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LoginPage(),
+            ),
+          );
         } else if (state is RegisteredSuccessState) {
           String uid = state.uid;
           Navigator.pushReplacement(

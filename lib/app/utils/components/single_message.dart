@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,7 +36,7 @@ class SingleMessage extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: isMe
                                 ? const Color(0xFF20A090)
-                                : Color.fromARGB(255, 234, 242, 248),
+                                : const Color.fromARGB(255, 234, 242, 248),
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(12),
                               bottomLeft: Radius.circular(12),

@@ -24,14 +24,17 @@ bottomSheet(BuildContext context, String currentId, String friendId) {
               BlocProvider.of<ChatBloc>(context).add(
                   LocationSentEvent(currentId: currentId, friendId: friendId));
             }),
+
             chatIcon(Ionicons.camera_outline, "Camera", () {
               BlocProvider.of<ChatBloc>(context).add(CameraImagesSentEvent(
                   currentId: currentId, friendId: friendId));
             }),
+
             chatIcon(Ionicons.images_outline, "Photo", () {
               BlocProvider.of<ChatBloc>(context).add(GalleryImagesSentEvent(
                   currentId: currentId, friendId: friendId));
             }),
+            
           ],
         ),
       ),
