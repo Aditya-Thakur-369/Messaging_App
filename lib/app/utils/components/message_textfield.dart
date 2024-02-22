@@ -17,7 +17,6 @@ class MessageTextField extends StatefulWidget {
 class _MessageTextFieldState extends State<MessageTextField> {
   TextEditingController controller = TextEditingController();
 
-  bool showEmoji = false;
 
   @override
   Widget build(BuildContext context) {

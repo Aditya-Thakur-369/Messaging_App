@@ -1,12 +1,15 @@
-// ignore_for_file: sort_child_properties_last, avoid_unnecessary_containers
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: sort_child_properties_last, avoid_unnecessary_containers, unnecessary_overrides
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
-import 'package:chat_app/app/view/chatScreen/chatScreen.dart';
-import 'package:chat_app/app/view/search/Search.dart';
+import 'package:chat_app/app/utils/components/skelton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
+import 'package:chat_app/app/view/chatScreen/chatScreen.dart';
+import 'package:chat_app/app/view/search/Search.dart';
 
 class Chats extends StatefulWidget {
   const Chats({Key? key}) : super(key: key);
@@ -15,8 +18,39 @@ class Chats extends StatefulWidget {
   State<Chats> createState() => _ChatsState();
 }
 
-class _ChatsState extends State<Chats> {
+class _ChatsState extends State<Chats> with WidgetsBindingObserver {
   User? user = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+    setStatus("Online");
+  }
+
+  void setStatus(String status) async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user!.uid)
+        .update({'status': status});
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      //online
+      setStatus("Online");
+    } else {
+      //offline
+      setStatus("Offline");
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +95,7 @@ class _ChatsState extends State<Chats> {
                       if (snapshot.hasData) {
                         var friend = snapshot.data;
                         return ListTile(
+                          trailing: Text(friend['status']),
                           leading: CircleAvatar(
                             radius: 40,
                             child: CachedNetworkImage(
@@ -93,9 +128,7 @@ class _ChatsState extends State<Chats> {
                           },
                         );
                       }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const SkeltonLoadingIndicator();
                     },
                   );
                 },
