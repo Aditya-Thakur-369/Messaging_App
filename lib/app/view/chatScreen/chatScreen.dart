@@ -3,8 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/app/utils/components/message_textfield.dart';
 import 'package:chat_app/app/utils/components/single_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ChatScreen extends StatefulWidget {
   final String friendId;
@@ -25,11 +27,18 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   User? user = FirebaseAuth.instance.currentUser;
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
+        actions: [
+          IconButton(onPressed: () {
+            
+          }, icon: const Icon(Icons.more_vert)),
+        ],
         title: Row(
           children: [
             CircleAvatar(
