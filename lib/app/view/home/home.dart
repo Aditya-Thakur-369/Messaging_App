@@ -7,8 +7,10 @@ import 'package:chat_app/app/view/chat/chat.dart';
 import 'package:chat_app/app/view/profile/profile.dart';
 import 'package:chat_app/app/view/status/status.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:ionicons/ionicons.dart';
 
 class Home extends StatefulWidget {
@@ -79,17 +81,15 @@ class _HomeState extends State<Home> {
         return Scaffold(
           body: screens.elementAt(state.tabIndex),
           bottomNavigationBar: BottomNavigationBar(
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(Ionicons.chatbox_ellipses_outline),
-                  label: 'chats'),
+                  icon: Icon(CupertinoIcons.chat_bubble), label: 'Chats'),
               BottomNavigationBarItem(
-                  icon: Icon(Ionicons.call_outline), label: 'calls'),
+                  icon: Icon(Iconsax.call_calling), label: 'Calls'),
               BottomNavigationBarItem(
-                  icon: Icon(Ionicons.people_circle_outline),
-                  label: 'contacts'),
+                  icon: Icon(Iconsax.people), label: 'contacts'),
               BottomNavigationBarItem(
-                  icon: Icon(Ionicons.person_outline), label: 'profile')
+                  icon: Icon(Iconsax.user), label: 'profile')
             ],
             currentIndex: state.tabIndex,
             fixedColor: Colors.black,

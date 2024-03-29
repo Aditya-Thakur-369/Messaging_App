@@ -2,6 +2,7 @@
 
 import 'package:chat_app/app/utils/components/showimage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,7 +19,8 @@ class SingleMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime dateTime = currentTime.toDate();
-    String formattedTime = DateFormat.Hm().format(dateTime);
+    String formattedTime = DateFormat('h:mm a').format(dateTime);
+
     return Column(
       children: [
         Row(
@@ -26,7 +28,8 @@ class SingleMessage extends StatelessWidget {
               isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment:
+                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 type == 'text'
                     ? Container(
@@ -36,42 +39,39 @@ class SingleMessage extends StatelessWidget {
                         constraints: const BoxConstraints(maxWidth: 200),
                         decoration: BoxDecoration(
                             color: isMe
-                                ? const Color(0xFF20A090)
-                                : const Color.fromARGB(255, 234, 242, 248),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(15),
-                            )),
+                                // ? Colors.blue.withOpacity(0.7)
+                                ? Colors.black
+                                : Colors.blue.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(30)),
                         child: Text(
                           message,
-                          style: TextStyle(
-                              fontSize: 17,
-                              color: isMe ? Colors.white : Colors.black),
+                          style: GoogleFonts.poppins(
+                              fontSize: 16, color: Colors.white),
                         ))
                     : Container(
                         margin: const EdgeInsets.only(right: 20, top: 10),
                         child: type == "link"
                             ? Container(
                                 padding: const EdgeInsets.all(16),
-                                margin: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.only(
+                                    top: 10, bottom: 2, left: 10, right: 10),
                                 constraints:
-                                    const BoxConstraints(maxWidth: 200),
+                                    const BoxConstraints(maxWidth: 260),
                                 decoration: BoxDecoration(
-                                    color: isMe ? Colors.black : Colors.grey,
+                                    color: isMe
+                                        // ? Colors.blue.withOpacity(0.7)
+                                        ? Colors.black
+                                        : Colors.blue.withOpacity(0.7),
                                     borderRadius: const BorderRadius.all(
-                                        Radius.circular(12))),
+                                        Radius.circular(30))),
                                 child: GestureDetector(
                                   onTap: () async {
                                     await launchUrl(Uri.parse('$message'));
                                   },
                                   child: Text(
                                     message,
-                                    style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16, color: Colors.white),
                                   ),
                                 ),
                               )
@@ -87,30 +87,32 @@ class SingleMessage extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => ShowImage(
+                                                    message: message,
                                                     imageUrl: message),
                                               ));
                                         },
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.42,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.30,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.black),
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                topRight: Radius.circular(18),
-                                                topLeft: Radius.circular(18),
-                                                bottomLeft: Radius.circular(18),
-                                              ),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(message),
-                                                  fit: BoxFit.fill)),
+                                        child: Hero(
+                                          tag: message,
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.42,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.30,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(30)),
+                                                image: DecorationImage(
+                                                    image:
+                                                        NetworkImage(message),
+                                                    fit: BoxFit.cover)),
+                                          ),
                                         ),
                                       )
                                     ],
@@ -119,10 +121,11 @@ class SingleMessage extends StatelessWidget {
                               ),
                       ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 17),
+                  padding: const EdgeInsets.only(right: 17, left: 17, top: 1),
                   child: Text(
                     formattedTime,
-                    style: const TextStyle(color: Colors.grey),
+                    style:
+                        GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
                   ),
                 )
               ],

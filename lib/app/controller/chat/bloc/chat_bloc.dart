@@ -88,6 +88,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(GalleryImageSentSuccessState());
 
       if (pickedFile != null) {
+        emit(ChatLoading());
         File imageFile = File(pickedFile.path);
         var ref = FirebaseStorage.instance
             .ref()
@@ -139,6 +140,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             .collection('messages')
             .doc(event.currentId)
             .set({'last_msg': imageUrl});
+
+        emit(ChatSuccess());
       }
     } catch (e) {
       print("Error uploading image: $e");
