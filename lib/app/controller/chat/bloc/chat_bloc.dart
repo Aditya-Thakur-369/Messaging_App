@@ -21,6 +21,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<GalleryImagesSentEvent>(galleryImagesSentEvent);
     on<LocationSentEvent>(locationSentEvent);
     on<CameraImagesSentEvent>(cameraImagesSentEvent);
+     on<VideoCallButtonClickedEvent>(videoCallButtonClickedEvent);
+     on<ChattedFriendDeleteEvent>(chattedFriendDeleteEvent);
   }
 
   FutureOr<void> chatShareEvent(
@@ -296,6 +298,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
     } catch (e) {
       print("Error uploading image: $e");
+    }
+  }
+
+    FutureOr<void> videoCallButtonClickedEvent(
+      VideoCallButtonClickedEvent event, Emitter<ChatState> emit) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(event.friendId)
+          .get();
+      emit(VideoCallWorkingState(
+          token: snapshot['token'], name: snapshot['name']));
+    } catch (error) {
+      print("Error fetching user data: $error");
+    }
+  }
+
+   FutureOr<void> chattedFriendDeleteEvent(
+      ChattedFriendDeleteEvent event, Emitter<ChatState> emit) {
+    try {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(event.currentUid)
+          .collection('messages')
+          .doc(event.friendId)
+          .delete();
+      emit(ChattedUserDeletedState());
+    } catch (e) {
+      print(e);
     }
   }
 }

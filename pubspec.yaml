@@ -57,11 +57,18 @@ dependencies:
   shimmer: ^3.0.0
   awesome_notifications: ^0.8.2
   firebase_messaging: ^14.7.19
-  agora_rtc_engine: ^6.3.0
+  agora_rtc_engine: ^5.0.0
   iconsax: ^0.0.8
   google_fonts: ^6.2.1
   palette_generator: ^0.3.3+3
   emoji_picker_flutter: ^2.1.1
+  permission_handler: ^10.2.0
+  get: ^4.6.6
+  timeago: ^3.6.1
+  flutter_colorpicker: ^1.0.3
+  status_view: ^0.0.2
+  story_view: ^0.16.5
+  animated_text_kit: ^4.2.2
   
 
 dev_dependencies:

@@ -3,10 +3,10 @@
 import 'package:chat_app/app/utils/components/showimage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-class SingleMessage extends StatelessWidget {
+class SingleMessage extends StatefulWidget {
   final type;
   final currentTime;
   final String message;
@@ -16,41 +16,48 @@ class SingleMessage extends StatelessWidget {
       required this.isMe,
       required this.currentTime,
       required this.type});
+
+  @override
+  State<SingleMessage> createState() => _SingleMessageState();
+}
+
+class _SingleMessageState extends State<SingleMessage> {
+  String? lastMessageTime;
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = currentTime.toDate();
-    String formattedTime = DateFormat('h:mm a').format(dateTime);
+    lastMessageTime = timeago.format(widget.currentTime.toDate());
 
     return Column(
       children: [
         Row(
           mainAxisAlignment:
-              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+              widget.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Column(
-              crossAxisAlignment:
-                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: widget.isMe
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
-                type == 'text'
+                widget.type == 'text'
                     ? Container(
                         padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.only(
                             top: 10, bottom: 2, left: 10, right: 10),
                         constraints: const BoxConstraints(maxWidth: 200),
                         decoration: BoxDecoration(
-                            color: isMe
+                            color: widget.isMe
                                 // ? Colors.blue.withOpacity(0.7)
                                 ? Colors.black
                                 : Colors.blue.withOpacity(0.7),
                             borderRadius: BorderRadius.circular(30)),
                         child: Text(
-                          message,
+                          widget.message,
                           style: GoogleFonts.poppins(
                               fontSize: 16, color: Colors.white),
                         ))
                     : Container(
                         margin: const EdgeInsets.only(right: 20, top: 10),
-                        child: type == "link"
+                        child: widget.type == "link"
                             ? Container(
                                 padding: const EdgeInsets.all(16),
                                 margin: const EdgeInsets.only(
@@ -58,7 +65,7 @@ class SingleMessage extends StatelessWidget {
                                 constraints:
                                     const BoxConstraints(maxWidth: 260),
                                 decoration: BoxDecoration(
-                                    color: isMe
+                                    color: widget.isMe
                                         // ? Colors.blue.withOpacity(0.7)
                                         ? Colors.black
                                         : Colors.blue.withOpacity(0.7),
@@ -66,10 +73,11 @@ class SingleMessage extends StatelessWidget {
                                         Radius.circular(30))),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    await launchUrl(Uri.parse('$message'));
+                                    await launchUrl(
+                                        Uri.parse('${widget.message}'));
                                   },
                                   child: Text(
-                                    message,
+                                    widget.message,
                                     style: GoogleFonts.poppins(
                                         fontSize: 16, color: Colors.white),
                                   ),
@@ -87,12 +95,12 @@ class SingleMessage extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => ShowImage(
-                                                    message: message,
-                                                    imageUrl: message),
+                                                    message: widget.message,
+                                                    imageUrl: widget.message),
                                               ));
                                         },
                                         child: Hero(
-                                          tag: message,
+                                          tag: widget.message,
                                           child: Container(
                                             width: MediaQuery.of(context)
                                                     .size
@@ -109,8 +117,8 @@ class SingleMessage extends StatelessWidget {
                                                     const BorderRadius.all(
                                                         Radius.circular(30)),
                                                 image: DecorationImage(
-                                                    image:
-                                                        NetworkImage(message),
+                                                    image: NetworkImage(
+                                                        widget.message),
                                                     fit: BoxFit.cover)),
                                           ),
                                         ),
@@ -123,7 +131,7 @@ class SingleMessage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 17, left: 17, top: 1),
                   child: Text(
-                    formattedTime,
+                    lastMessageTime!,
                     style:
                         GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
                   ),

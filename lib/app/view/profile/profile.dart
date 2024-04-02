@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_constructors, unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 // ignore_for_file: unrelated_type_equality_checks, camel_case_types
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,6 +28,8 @@ class _ProfileState extends State<Profile> {
   String? imageUrl;
   String? name;
   String? id;
+  File? pickedImage;
+  TextEditingController nameEditingController = TextEditingController();
 
   PaletteGenerator? paletteGenerator;
 
@@ -46,6 +50,17 @@ class _ProfileState extends State<Profile> {
     final color = Color.fromRGBO(64, 105, 225, 1);
     return BlocConsumer<ProfileBloc, ProfileState>(
       listener: (context, state) {
+        if (state is ProfileImagePickedSuccessState) {
+          setState(() {
+            pickedImage = state.image;
+          });
+          BlocProvider.of<ProfileBloc>(context)
+              .add(ProfileSaveToDbEvent(image: pickedImage));
+        } else if (state is ProfileImageUpdatedSuccessState) {
+          setState(() {
+            pickedImage = null;
+          });
+        }
         if (state is LogoutDoneState) {
           Navigator.pushReplacement(
               context,
@@ -163,17 +178,35 @@ class _ProfileState extends State<Profile> {
                             clipBehavior: Clip.antiAlias,
                             child: Padding(
                                 padding: EdgeInsets.all(4.0),
-                                child: imageUrl != null
-                                    ? CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(imageUrl!),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.all(28.0),
+                                child: pickedImage != null
+                                    ?
+                                    // CircleAvatar(
+                                    //     backgroundColor: color,
+                                    //     radius: 75,
+                                    //     child: CircleAvatar(
+                                    //       radius: 70,
+                                    //       backgroundImage: FileImage(
+                                    //           File(pickedImage!.path)),
+                                    //     ),
+                                    //   )
+                                    Center(
                                         child: CircularProgressIndicator(
                                           color: Colors.black,
+                                          strokeAlign: 30,
+                                          strokeWidth: 3,
                                         ),
-                                      )),
+                                      )
+                                    : imageUrl != null
+                                        ? CircleAvatar(
+                                            backgroundImage:
+                                                NetworkImage(imageUrl!),
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.all(28.0),
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
+                                          )),
                           ),
                           SizedBox(
                             height: 20,
@@ -243,10 +276,122 @@ class _ProfileState extends State<Profile> {
                       ),
                       const SizedBox(height: 20),
                       ProfileMenuWidget(
+                        title: 'Update Name',
+                        onpress: () {
+                          showModalBottomSheet(
+                            backgroundColor: Colors.white,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const SizedBox(height: 16.0),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 6),
+                                        child: Text(
+                                          'Enter Your Name',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      TextField(
+                                        controller: nameEditingController,
+                                        decoration: const InputDecoration(
+                                            suffixIcon: Icon(
+                                              Icons.abc,
+                                              size: 30,
+                                            ),
+                                            hintText: 'Enter your text...',
+                                            border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)))),
+                                      ),
+                                      const SizedBox(height: 16.0),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            TextButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStatePropertyAll(
+                                                            Colors.white)),
+                                                onPressed: () {
+                                                  // BlocProvider.of<ProfileBloc>(
+                                                  //         context)
+                                                  //     .add(
+                                                  //         ProfileDataCancelEvent());
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.red,
+                                                  ),
+                                                )),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            TextButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStatePropertyAll(
+                                                            Colors.black)),
+                                                onPressed: () {
+                                                  BlocProvider.of<ProfileBloc>(
+                                                          context)
+                                                      .add(ProfileDataSaveEvent(
+                                                          userName:
+                                                              nameEditingController
+                                                                  .text));
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  'Save',
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        icon: Icons.abc_sharp,
+                        color: Colors.teal,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      ProfileMenuWidget(
                         title: 'Upload Image',
                         onpress: () {
                           BlocProvider.of<ProfileBloc>(context)
-                              .add(NavigateToprofileUpdatePageEvent());
+                              .add(ProfileImageUpdateEvent());
+                          BlocProvider.of<ProfileBloc>(context)
+                              .add(ProfileSaveToDbEvent(image: pickedImage));
                         },
                         icon: Iconsax.document_upload,
                         color: Colors.green,

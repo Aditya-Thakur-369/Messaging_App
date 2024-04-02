@@ -12,7 +12,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_core
   firebase_storage
   geolocator_windows
-  iris_method_channel
+  permission_handler_windows
   url_launcher_windows
 )
 

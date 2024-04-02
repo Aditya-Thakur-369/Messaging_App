@@ -15,3 +15,12 @@ class BottomSheetSuccessState extends ChatState{}
 
 class GalleryImageSentSuccessState extends ChatState{}
 
+class VideoCallWorkingState extends ChatState {
+  final String token;
+  final String name;
+  VideoCallWorkingState({
+    required this.token,
+    required this.name,
+  });
+}
+class ChattedUserDeletedState extends ChatState{}
