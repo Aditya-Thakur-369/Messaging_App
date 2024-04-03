@@ -20,6 +20,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileDataCancelEvent>(profileDataCancelEvent);
     on<ProfileImageUpdateEvent>(profileImageUpdateEvent);
     on<ProfileSaveToDbEvent>(profileSaveToDbEvent);
+     on<DeleteButtonClickedEvent>(deleteButtonClickedEvent);
   }
 
   FutureOr<void> louOutEvent(LouOutEvent event, Emitter<ProfileState> emit) {
@@ -101,6 +102,52 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileImageUpdatedSuccessState());
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+
+  FutureOr<void> deleteButtonClickedEvent(
+      DeleteButtonClickedEvent event, Emitter<ProfileState> emit) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    try {
+      QuerySnapshot<Map<String, dynamic>> usersSnapshot =
+          await FirebaseFirestore.instance.collection('Users').get();
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> userSnapshot
+          in usersSnapshot.docs) {
+        String userId = userSnapshot.id;
+
+        // Delete messages document for current user
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('messages')
+            .doc(userId)
+            .delete();
+
+        // Delete chats document for current user
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .collection('messages')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .delete();
+      }
+
+      // Delete user account
+      if (user != null) {
+        await user.delete();
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .delete();
+      }
+
+      print('User account and associated data deleted successfully');
+      emit(UserDeletedState());
+    } catch (e) {
+      print('Error deleting user account and associated data: $e');
     }
   }
 }

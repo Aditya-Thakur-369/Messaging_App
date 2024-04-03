@@ -6,11 +6,14 @@ import 'package:chat_app/app/utils/components/skelton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/view/chatScreen/chatScreen.dart';
 import 'package:chat_app/app/view/search/Search.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -114,15 +117,16 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.docs.length < 1) {
-                return   Center(
+                return Center(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 400,
-                      width: 340,
-                      child: Image.asset("assets/images/add_friend.png"),
-                    ),
+                    // SizedBox(
+                    //   height: 400,
+                    //   width: 340,
+                    //   child: Image.asset("assets/images/chatapp.gif"),
+                    // ),
                     FittedBox(
                       child: Text(
                         "Stay Connected with your friends 👋",
@@ -133,7 +137,7 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
                       ),
                     ),
                     Padding(
-                      padding:  EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 8),
                       child: Text(
                           "Start your journey of connection. Build friendships,       share moments Stay connected with your friends. 🌟",
@@ -143,35 +147,6 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
                           )),
                     ),
                     const SizedBox(height: 10),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(
-                          horizontal: 22, vertical: 8),
-                      child: CupertinoButton(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(30),
-                          child: SizedBox(
-                            width: 300,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.add_circle_outline_rounded),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text("Add new friends",
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                    )),
-                              ],
-                            ),
-                          ),
-                          onPressed: () {
-                            BlocProvider.of<ChatBloc>(context)
-                                .add(NavigateToSearchPageEvent());
-                          }),
-                    ),
                   ],
                 ));
               }
@@ -188,109 +163,153 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         var friend = snapshot.data;
-                        return ListTile(
-                          onLongPress: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Delete Chat'),
-                                  content: const Text(
-                                      'Are you sure you want to delete this Chat?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        BlocProvider.of<ChatBloc>(context).add(
-                                            ChattedFriendDeleteEvent(
-                                                currentUid: user!.uid,
-                                                friendId: friendId));
-                                      },
-                                      child: const Text('Delete'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          leading: Container(
-                            height: 50,
-                            width: 50,
-                            clipBehavior: Clip.antiAlias,
-                            decoration:
-                                const BoxDecoration(shape: BoxShape.circle),
-                            child: friend['image'] != null
-                                ? CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl: friend['image'],
-                                    placeholder: (conteext, url) =>
-                                        const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(
-                                      Icons.error,
-                                    ),
-                                    height: 50,
-                                  )
-                                : const Center(
-                                    child: Icon(Iconsax.profile),
-                                  ),
-                          ),
-                          title: Text(
-                            friend['name'],
-                            style: GoogleFonts.poppins(
-                                fontSize: 18, fontWeight: FontWeight.w500),
-                          ),
-                          subtitle: Container(
-                            child: Text(
-                              '$lastMsg',
-                              style: GoogleFonts.poppins(color: Colors.grey),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          trailing: StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(user!.uid)
-                                .collection('messages')
-                                .doc(friendId)
-                                .collection('chats')
-                                .orderBy('date', descending: true)
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                final docs = snapshot.data!.docs;
-                                if (docs.isNotEmpty) {
-                                  final lastMessageDoc = docs.first;
-                                  final currentTime = lastMessageDoc['date'];
-                                  lastMessageTime =
-                                      timeago.format(currentTime.toDate());
-                                  return Text(
-                                    lastMessageTime!,
-                                    style: GoogleFonts.poppins(
-                                        color: Colors.grey, fontSize: 8),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          child: ListTile(
+                            onLongPress: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Delete Chat'),
+                                    content: const Text(
+                                        'Are you sure you want to delete this Chat?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          BlocProvider.of<ChatBloc>(context)
+                                              .add(ChattedFriendDeleteEvent(
+                                                  currentUid: user!.uid,
+                                                  friendId: friendId));
+                                        },
+                                        child: const Text('Delete'),
+                                      ),
+                                    ],
                                   );
-                                } else {
-                                  return const SizedBox();
+                                },
+                              );
+                            },
+                            leading: SizedBox(
+                              height: 60,
+                              width: 60,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0,
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Container(
+                                      height: 60,
+                                      width: 60,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle),
+                                      child: friend['image'] != null
+                                          ? CachedNetworkImage(
+                                              fit: BoxFit.cover,
+                                              imageUrl: friend['image'],
+                                              placeholder: (conteext, url) =>
+                                                  const CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(
+                                                Icons.error,
+                                              ),
+                                              height: 60,
+                                            )
+                                          : const Center(
+                                              child: Icon(Iconsax.profile),
+                                            ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 2,
+                                    right: 2,
+                                    child: Container(
+                                      height: 14,
+                                      width: 14,
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Container(
+                                          height: 12,
+                                          width: 12,
+                                          decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.green),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            title: Text(
+                              friend['name'],
+                              style: GoogleFonts.poppins(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            subtitle: Container(
+                              child: Text(
+                                '$lastMsg',
+                                style: GoogleFonts.poppins(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            trailing: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Users')
+                                  .doc(user!.uid)
+                                  .collection('messages')
+                                  .doc(friendId)
+                                  .collection('chats')
+                                  .orderBy('date', descending: true)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  final docs = snapshot.data!.docs;
+                                  if (docs.isNotEmpty) {
+                                    final lastMessageDoc = docs.first;
+                                    final currentTime = lastMessageDoc['date'];
+                                    lastMessageTime =
+                                        timeago.format(currentTime.toDate());
+                                    return Text(
+                                      lastMessageTime!,
+                                      style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.grey,
+                                          fontSize: 12),
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
                                 }
-                              }
-                              return const SizedBox();
+                                return const SizedBox();
+                              },
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatScreen(
+                                        friendId: friend['uid'],
+                                        friendName: friend['name'],
+                                        friendImage: friend['image']),
+                                  ));
                             },
                           ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChatScreen(
-                                      friendId: friend['uid'],
-                                      friendName: friend['name'],
-                                      friendImage: friend['image']),
-                                ));
-                          },
                         );
                       }
                       return const SkeltonLoadingIndicator();
@@ -313,14 +332,13 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
                   .add(NavigateToSearchPageEvent());
             },
             child: const Icon(
-              CupertinoIcons.add,
+              Iconsax.story,
               size: 30,
             ),
             backgroundColor: Colors.black,
             shape: const CircleBorder(),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

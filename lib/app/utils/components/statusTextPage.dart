@@ -20,15 +20,17 @@ class StatusTextPage extends StatefulWidget {
 }
 
 class _StatusTextPageState extends State<StatusTextPage> {
+  bool showImage = true;
   final String camera = 'camera';
   final String addStatus = 'addstatus';
   User? user = FirebaseAuth.instance.currentUser;
-  Color color = Colors.white;
+  Color backgroundColor = Colors.white; // Store color in the state
   final datacontroller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: color,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: AnimatedTextKit(animatedTexts: [
@@ -42,12 +44,6 @@ class _StatusTextPageState extends State<StatusTextPage> {
               textStyle: GoogleFonts.poppins(
                   fontWeight: FontWeight.w500, color: Colors.black))
         ]),
-        // Text(
-        //   "Status",
-        //   style: GoogleFonts.poppins(
-        //     fontWeight: FontWeight.w500,
-        //   ),
-        // ),
         centerTitle: true,
         actions: [
           Padding(
@@ -73,14 +69,14 @@ class _StatusTextPageState extends State<StatusTextPage> {
             child: FloatingActionButton(
               heroTag: camera,
               backgroundColor: Colors.black,
-              shape: CircleBorder(),
+              shape: const CircleBorder(),
               onPressed: () {},
-              child: Center(
+              child: const Center(
                 child: Icon(Icons.camera),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           SizedBox(
@@ -106,7 +102,7 @@ class _StatusTextPageState extends State<StatusTextPage> {
                     .doc()
                     .set({
                   "Data": datacontroller.text,
-                  'color': color.value,
+                  'color': backgroundColor.value,
                   'timestamp': DateTime.now().toUtc(),
                 });
                 Future.delayed(const Duration(seconds: 30), () {
@@ -164,15 +160,12 @@ class _StatusTextPageState extends State<StatusTextPage> {
         },
         builder: (context, state) {
           if (state is ColorPickerState) {
-            color = state.color;
+            backgroundColor =
+                state.color; // Update backgroundColor in the state
           }
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              datacontroller.text.isEmpty
-                  ? Image.asset("assets/images/undraw_status.png")
-                  : const SizedBox.shrink(),
-              // const Spacer(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -197,99 +190,6 @@ class _StatusTextPageState extends State<StatusTextPage> {
                       style: GoogleFonts.poppins(
                           fontSize: 18, color: Colors.grey.withOpacity(0.8)))
                   : const SizedBox.shrink(),
-              const Spacer(),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 4, right: 75, bottom: 16),
-              //   child: Row(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              // SizedBox(
-              //   width: MediaQuery.sizeOf(context).width / 2 - 40,
-              //   child: CupertinoButton(
-              //       minSize: 50,
-              //       color: Colors.black,
-              //       borderRadius: BorderRadius.circular(30),
-              //       child: SizedBox(
-              //         width: 180,
-              //         child: Center(
-              //           child: Text("Image",
-              //               style: GoogleFonts.poppins(
-              //                 fontWeight: FontWeight.w600,
-              //                 fontSize: 12,
-              //               )),
-              //         ),
-              //       ),
-              //       onPressed: () {}),
-              // ),
-              // SizedBox(
-              //   width: MediaQuery.sizeOf(context).width / 2 - 40,
-              //   child: CupertinoButton(
-              //       minSize: 50,
-              //       color: Colors.black,
-              //       borderRadius: BorderRadius.circular(40),
-              //       child: SizedBox(
-              //         width: 180,
-              //         child: Center(
-              //           child: Text("Text",
-              //               style: GoogleFonts.poppins(
-              //                 fontWeight: FontWeight.w600,
-              //                 fontSize: 14,
-              //               )),
-              //         ),
-              //       ),
-              //       onPressed: () {}),
-              // ),
-              //   SizedBox(
-              //     width: MediaQuery.sizeOf(context).width / 2 - 40,
-              //     child: OutlinedButton(
-              //         style: const ButtonStyle(
-              //             minimumSize:
-              //                 MaterialStatePropertyAll(Size(180, 50)),
-              //             shape: MaterialStatePropertyAll(
-              //                 RoundedRectangleBorder(
-              //                     borderRadius: BorderRadius.all(
-              //                         Radius.circular(30))))),
-              //         child: SizedBox(
-              //           width: 180,
-              //           child: Center(
-              //             child: Text("Image",
-              //                 style: GoogleFonts.poppins(
-              //                     fontWeight: FontWeight.w600,
-              //                     fontSize: 14,
-              //                     color: Colors.black)),
-              //           ),
-              //         ),
-              //         onPressed: () {}),
-              //   ),
-              //   const SizedBox(
-              //     width: 1,
-              //   ),
-              //   SizedBox(
-              //     width: MediaQuery.sizeOf(context).width / 2 - 40,
-              //     child: OutlinedButton(
-              //         style: const ButtonStyle(
-              //             minimumSize:
-              //                 MaterialStatePropertyAll(Size(180, 50)),
-              //             shape: MaterialStatePropertyAll(
-              //                 RoundedRectangleBorder(
-              //                     borderRadius: BorderRadius.all(
-              //                         Radius.circular(30))))),
-              //         child: SizedBox(
-              //           width: 180,
-              //           child: Center(
-              //             child: Text("Text",
-              //                 style: GoogleFonts.poppins(
-              //                     fontWeight: FontWeight.w600,
-              //                     fontSize: 14,
-              //                     color: Colors.black)),
-              //           ),
-              //         ),
-              //         onPressed: () {}),
-              //   ),
-              // ],
-              // ),
-              // ),
             ],
           );
         },
@@ -299,11 +199,13 @@ class _StatusTextPageState extends State<StatusTextPage> {
 
   buildColorPicker() {
     return ColorPicker(
-      pickerColor: color,
+      pickerColor: backgroundColor, // Use backgroundColor from state
       onColorChanged: (Color colors) {
         setState(() {
           BlocProvider.of<StatusBloc>(context)
               .add(ColorPickerEvent(color: colors));
+          showImage = false;
+          backgroundColor = colors; // Update backgroundColor in the state
         });
       },
     );

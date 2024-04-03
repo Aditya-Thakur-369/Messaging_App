@@ -1,16 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_constructors, unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 // ignore_for_file: unrelated_type_equality_checks, camel_case_types
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-
 import 'package:chat_app/app/controller/profile/bloc/profile_bloc.dart';
 import 'package:chat_app/app/view/login/login.dart';
-import 'package:chat_app/app/view/profileupdate/profileupdate.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -67,12 +65,11 @@ class _ProfileState extends State<Profile> {
               MaterialPageRoute(
                 builder: (context) => LoginPage(),
               ));
-        } else if (state is NavigationDoneToProfileUpdatePageState) {
-          Navigator.push(
+        } else if (state is UserDeletedState) {
+          Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    ProfileUpdate(imageUrl: imageUrl!, name: name!, id: id!),
+                builder: (context) => LoginPage(),
               ));
         }
       },
@@ -86,17 +83,6 @@ class _ProfileState extends State<Profile> {
           generatecolor(imageUrl!);
 
           return Scaffold(
-            // appBar: AppBar(
-            //   actions: [
-            //     IconButton(
-            //       onPressed: () {
-            // BlocProvider.of<ProfileBloc>(context)
-            //     .add(NavigateToprofileUpdatePageEvent());
-            //       },
-            //       icon: const Icon(Icons.edit),
-            //     ),
-            //   ],
-            // ),
             body: Column(
               children: [
                 Stack(
@@ -112,15 +98,6 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
-                    // CircleAvatar(
-                    //   backgroundColor: color,
-                    //   radius: 75,
-                    //   child: CircleAvatar(
-                    //     radius: 70,
-                    //     backgroundImage: NetworkImage(imageUrl!),
-                    //   ),
-                    // ),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 30),
@@ -138,13 +115,14 @@ class _ProfileState extends State<Profile> {
                                       Colors.transparent)),
                               onPressed: () {
                                 BlocProvider.of<ProfileBloc>(context)
-                                    .add(NavigateToprofileUpdatePageEvent());
+                                    .add(ProfileImageUpdateEvent());
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                    ProfileSaveToDbEvent(image: pickedImage));
                               },
                               icon: Icon(Iconsax.edit_2, color: Colors.black))
                         ],
                       ),
                     ),
-
                     Positioned(
                       top: 100,
                       left: 130,
@@ -179,17 +157,7 @@ class _ProfileState extends State<Profile> {
                             child: Padding(
                                 padding: EdgeInsets.all(4.0),
                                 child: pickedImage != null
-                                    ?
-                                    // CircleAvatar(
-                                    //     backgroundColor: color,
-                                    //     radius: 75,
-                                    //     child: CircleAvatar(
-                                    //       radius: 70,
-                                    //       backgroundImage: FileImage(
-                                    //           File(pickedImage!.path)),
-                                    //     ),
-                                    //   )
-                                    Center(
+                                    ? Center(
                                         child: CircularProgressIndicator(
                                           color: Colors.black,
                                           strokeAlign: 30,
@@ -401,7 +369,10 @@ class _ProfileState extends State<Profile> {
                       ),
                       ProfileMenuWidget(
                         title: 'Delete Account',
-                        onpress: () {},
+                        onpress: () {
+                          BlocProvider.of<ProfileBloc>(context)
+                              .add(DeleteButtonClickedEvent());
+                        },
                         icon: Iconsax.profile_delete,
                         color: Colors.purple,
                       ),
@@ -422,8 +393,9 @@ class _ProfileState extends State<Profile> {
                       ),
                       ProfileMenuWidget(
                         title: 'Invite Friend',
-                        onpress: () {},
-                        // icon: Ionicons.share_outline,
+                        onpress: () {
+                          // Share.share("com.example.myapp");
+                        },
                         icon: Iconsax.share,
                         color: Colors.orange,
                       ),

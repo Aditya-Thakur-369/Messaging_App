@@ -27,6 +27,7 @@ class _SingleMessageState extends State<SingleMessage> {
   Widget build(BuildContext context) {
     lastMessageTime = timeago.format(widget.currentTime.toDate());
 
+    var color = Color(0xFF5B17FE);
     return Column(
       children: [
         Row(
@@ -34,9 +35,10 @@ class _SingleMessageState extends State<SingleMessage> {
               widget.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Column(
-              crossAxisAlignment: widget.isMe
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // crossAxisAlignment: widget.isMe
+              //     ? CrossAxisAlignment.end
+              //     : CrossAxisAlignment.start,
               children: [
                 widget.type == 'text'
                     ? Container(
@@ -46,14 +48,20 @@ class _SingleMessageState extends State<SingleMessage> {
                         constraints: const BoxConstraints(maxWidth: 200),
                         decoration: BoxDecoration(
                             color: widget.isMe
-                                // ? Colors.blue.withOpacity(0.7)
-                                ? Colors.black
-                                : Colors.blue.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(30)),
+                                ? color
+                                // : Colors.blue.withOpacity(0.7),
+                                : Colors.transparent,
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.zero)),
                         child: Text(
                           widget.message,
                           style: GoogleFonts.poppins(
-                              fontSize: 16, color: Colors.white),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: widget.isMe ? Colors.white : Colors.black),
                         ))
                     : Container(
                         margin: const EdgeInsets.only(right: 20, top: 10),
@@ -66,11 +74,14 @@ class _SingleMessageState extends State<SingleMessage> {
                                     const BoxConstraints(maxWidth: 260),
                                 decoration: BoxDecoration(
                                     color: widget.isMe
-                                        // ? Colors.blue.withOpacity(0.7)
-                                        ? Colors.black
-                                        : Colors.blue.withOpacity(0.7),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30))),
+                                        ? Color(0xFF5B17FE)
+                                        // : Colors.blue.withOpacity(0.7),
+                                        : Colors.transparent,
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                        bottomLeft: Radius.circular(20),
+                                        bottomRight: Radius.zero)),
                                 child: GestureDetector(
                                   onTap: () async {
                                     await launchUrl(
@@ -79,7 +90,11 @@ class _SingleMessageState extends State<SingleMessage> {
                                   child: Text(
                                     widget.message,
                                     style: GoogleFonts.poppins(
-                                        fontSize: 16, color: Colors.white),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: widget.isMe
+                                            ? Colors.white
+                                            : Colors.black),
                                   ),
                                 ),
                               )

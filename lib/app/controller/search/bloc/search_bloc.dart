@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_is_empty
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

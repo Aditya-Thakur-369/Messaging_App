@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../utils/services/sentpushnotification.dart';
 
@@ -52,7 +53,23 @@ class _ChatScreenState extends State<ChatScreen> {
                   BlocProvider.of<ChatBloc>(context).add(
                       VideoCallButtonClickedEvent(friendId: widget.friendId));
                 },
-                icon: const Icon(Ionicons.videocam_outline)),
+                // icon: const Icon(Ionicons.videocam_outline)),
+                icon: const Icon(
+                  Iconsax.video4,
+                  color: Colors.grey,
+                  size: 30,
+                )),
+            IconButton(
+                onPressed: () {
+                  BlocProvider.of<ChatBloc>(context).add(
+                      VideoCallButtonClickedEvent(friendId: widget.friendId));
+                },
+                // icon: const Icon(Ionicons.videocam_outline)),
+                icon: const Icon(
+                  Iconsax.call,
+                  color: Colors.grey,
+                  size: 28,
+                )),
             PopupMenuButton<String>(
               onSelected: (value) {
                 if (value == 'delete') {
@@ -107,20 +124,59 @@ class _ChatScreenState extends State<ChatScreen> {
                             imageUrl: widget.friendImage),
                       ));
                 },
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: widget.friendImage,
-                    placeholder: (conteext, url) =>
-                        const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => const Icon(
-                      Icons.error,
-                    ),
-                    height: 50,
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          clipBehavior: Clip.antiAlias,
+                          decoration:
+                              const BoxDecoration(shape: BoxShape.circle),
+                          child: widget.friendImage != null
+                              ? CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: widget.friendImage,
+                                  placeholder: (conteext, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(
+                                    Icons.error,
+                                  ),
+                                  height: 50,
+                                )
+                              : const Center(
+                                  child: Icon(Iconsax.profile),
+                                ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 2,
+                        right: 1,
+                        child: Container(
+                          height: 14,
+                          width: 14,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Container(
+                              height: 12,
+                              width: 12,
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.green),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -131,12 +187,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   Text(
                     widget.friendName,
                     style: GoogleFonts.poppins(
-                        fontSize: 18, fontWeight: FontWeight.w500),
+                        fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   Text(
                     "Online",
-                    style:
-                        GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
+                    style: GoogleFonts.poppins(
+                        color: Colors.green,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500),
                   )
                 ],
               )
