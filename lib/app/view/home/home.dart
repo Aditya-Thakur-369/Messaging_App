@@ -12,8 +12,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:iconsax/iconsax.dart';
 
 class Home extends StatefulWidget {
   Home({super.key});
@@ -111,6 +123,12 @@ class _HomeState extends State<Home> {
   }
 
   HomeBloc homeBloc = HomeBloc();
+  int selectedIndex = 0;
+  List<IconData> icondata = [
+    Iconsax.messages_2,
+    Ionicons.book_outline,
+    Ionicons.person_outline
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -119,27 +137,75 @@ class _HomeState extends State<Home> {
       builder: (context, state) {
         return Scaffold(
           body: screens.elementAt(state.tabIndex),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Ionicons.chatbox_ellipses_outline),
-                  label: 'chats'),
-              BottomNavigationBarItem(
-                  icon: Icon(Ionicons.book_outline), label: 'stories'),
-              BottomNavigationBarItem(
-                  icon: Icon(Ionicons.person_outline), label: 'profile')
-            ],
-            currentIndex: state.tabIndex,
-            fixedColor: Colors.black,
-            unselectedItemColor: const Color.fromARGB(255, 207, 205, 205),
-            onTap: (value) {
-              homeBloc.add(
-                TabChangeEvent(tabIndex: value),
-              );
-            },
+          bottomNavigationBar: Material(
+            child: Container(
+              height: 80,
+              decoration: const BoxDecoration(
+                color: Color(0xFF5B17FE),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: icondata.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                      homeBloc.add(TabChangeEvent(tabIndex: index));
+                    },
+                    child: SizedBox(
+                      height: 80,
+                      width: MediaQuery.sizeOf(context).width / 3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          icondata[index],
+                          color: index == selectedIndex
+                              ? Colors.white
+                              : Colors.grey,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
         );
       },
     );
   }
 }
+
+
+
+  // bottomNavigationBar: BottomNavigationBar(
+          //   unselectedLabelStyle: GoogleFonts.poppins(),
+          //   selectedLabelStyle: GoogleFonts.poppins(),
+          //   items: const [
+          //     BottomNavigationBarItem(
+          //       // icon: Icon(Ionicons.chatbox_ellipses_outline),
+          //       icon: Icon(
+          //         Iconsax.messages_2,
+          //       ),
+          //       label: 'Chats',
+          //     ),
+          //     BottomNavigationBarItem(
+          //         icon: Icon(Ionicons.book_outline), label: 'Stories'),
+          //     BottomNavigationBarItem(
+          //         icon: Icon(Ionicons.person_outline), label: 'Profile')
+          //   ],
+          //   currentIndex: state.tabIndex,
+          //   fixedColor: const Color(0xFF5B17FE),
+          //   unselectedItemColor: const Color.fromARGB(255, 207, 205, 205),
+          //   onTap: (value) {
+          //     homeBloc.add(
+          //       TabChangeEvent(tabIndex: value),
+          //     );
+          //   },
+          // ),

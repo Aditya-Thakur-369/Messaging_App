@@ -36,7 +36,11 @@ class _MessageTextFieldState extends State<MessageTextField> {
       builder: (context, state) {
         return Container(
           color: Colors.white,
-          padding: const EdgeInsetsDirectional.all(4),
+          padding: const EdgeInsetsDirectional.only(
+            bottom: 12,
+            start: 8,
+            end: 8,
+          ),
           child: Expanded(
               child: Column(
             children: [
@@ -49,7 +53,8 @@ class _MessageTextFieldState extends State<MessageTextField> {
                 maxLines: 3,
                 decoration: InputDecoration(
                     hintText: "Type Here... ",
-                    hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                    hintStyle: GoogleFonts.poppins(
+                        color: Colors.grey, fontWeight: FontWeight.w400),
                     fillColor: Colors.grey[100],
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 14, horizontal: 14),
@@ -59,15 +64,15 @@ class _MessageTextFieldState extends State<MessageTextField> {
                       children: [
                         IconButton.filled(
                             style: const ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll(Colors.black)),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    Colors.transparent)),
                             onPressed: () {
                               setState(() {
                                 showEmojiPicker = !showEmojiPicker;
                               });
                             },
-                            icon: const Icon(Icons.emoji_emotions,
-                                color: Colors.white)),
+                            icon: const Icon(Iconsax.emoji_happy,
+                                color: Colors.grey)),
                         const SizedBox(
                           width: 6,
                         ),
@@ -80,19 +85,19 @@ class _MessageTextFieldState extends State<MessageTextField> {
                               IconButton.filled(
                                   style: const ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
-                                          Colors.black)),
+                                          Colors.transparent)),
                                   onPressed: () {
                                     BlocProvider.of<ChatBloc>(context).add(
                                         CameraImagesSentEvent(
                                             currentId: widget.currentId,
                                             friendId: widget.friendId));
                                   },
-                                  icon: const Icon(Icons.camera,
-                                      color: Colors.white)),
+                                  icon: const Icon(Iconsax.camera,
+                                      color: Colors.grey)),
                               IconButton.filled(
                                   style: const ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
-                                          Colors.black)),
+                                          Colors.transparent)),
                                   onPressed: () {
                                     BlocProvider.of<ChatBloc>(context).add(
                                         GalleryImagesSentEvent(
@@ -104,15 +109,15 @@ class _MessageTextFieldState extends State<MessageTextField> {
                                           height: 30,
                                           width: 30,
                                           child: CircularProgressIndicator(
-                                            color: Colors.white,
+                                            color: Colors.grey,
                                           ),
                                         )
                                       : Icon(Iconsax.image,
-                                          color: Colors.white)),
+                                          color: Colors.grey)),
                               IconButton.filled(
                                   style: const ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
-                                          Colors.black)),
+                                          Colors.transparent)),
                                   onPressed: () {
                                     BlocProvider.of<ChatBloc>(context).add(
                                         LocationSentEvent(
@@ -120,7 +125,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
                                             friendId: widget.friendId));
                                   },
                                   icon: const Icon(Iconsax.location,
-                                      color: Colors.white)),
+                                      color: Colors.grey)),
                               // IconButton(
                               //     onPressed: () {
                               //       BlocProvider.of<ChatBloc>(context)
@@ -146,7 +151,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
                               "Send",
                               style: GoogleFonts.poppins(
                                   fontSize: 18,
-                                  color: Colors.black,
+                                  color: const Color(0xFF5B17FE),
                                   fontWeight: FontWeight.w600),
                             )),
                     border: InputBorder.none

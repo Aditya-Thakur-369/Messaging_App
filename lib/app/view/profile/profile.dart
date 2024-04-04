@@ -417,7 +417,7 @@ class _ProfileState extends State<Profile> {
                     style: GoogleFonts.poppins(
                         fontSize: 10,
                         fontWeight: FontWeight.w400,
-                        color: Colors.blue),
+                        color: Color(0xFF5B17FE)),
                   ),
                 ])),
                 SizedBox(

@@ -70,46 +70,56 @@ class _ChatScreenState extends State<ChatScreen> {
                   color: Colors.grey,
                   size: 28,
                 )),
-            PopupMenuButton<String>(
-              onSelected: (value) {
-                if (value == 'delete') {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Delete Conversation'),
-                        content: const Text(
-                            'Are you sure you want to delete this conversation?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              deleteConversation();
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Delete'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
-                  value: 'delete',
-                  child: ListTile(
-                    leading: Icon(Ionicons.trash_bin_outline),
-                    title: Text('Delete'),
-                  ),
-                ),
-              ],
-            )
+            IconButton(
+                onPressed: () {
+                  deleteConversation();
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  CupertinoIcons.delete,
+                  color: Colors.grey,
+                  size: 28,
+                )),
+            // PopupMenuButton<String>(
+            //   onSelected: (value) {
+            //     if (value == 'delete') {
+            //       showDialog(
+            //         context: context,
+            //         builder: (BuildContext context) {
+            //           return AlertDialog(
+            //             title: const Text('Delete Conversation'),
+            //             content: const Text(
+            //                 'Are you sure you want to delete this conversation?'),
+            //             actions: [
+            //               TextButton(
+            //                 onPressed: () {
+            //                   Navigator.of(context).pop();
+            //                 },
+            //                 child: const Text('Cancel'),
+            //               ),
+            //               TextButton(
+            //                 onPressed: () {
+            //                   deleteConversation();
+            //                   Navigator.of(context).pop();
+            //                 },
+            //                 child: const Text('Delete'),
+            //               ),
+            //             ],
+            //           );
+            //         },
+            //       );
+            //     }
+            //   },
+            //   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            //     const PopupMenuItem<String>(
+            //       value: 'delete',
+            //       child: ListTile(
+            //         leading: Icon(Ionicons.trash_bin_outline),
+            //         title: Text('Delete'),
+            //       ),
+            //     ),
+            //   ],
+            // )
           ],
           title: Row(
             children: [
@@ -187,7 +197,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Text(
                     widget.friendName,
                     style: GoogleFonts.poppins(
-                        fontSize: 18, fontWeight: FontWeight.w600),
+                        fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                   Text(
                     "Online",
