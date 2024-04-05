@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_constructors, unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 // ignore_for_file: unrelated_type_equality_checks, camel_case_types
 import 'dart:io';
+import 'package:chat_app/app/view/root/root.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:chat_app/app/controller/profile/bloc/profile_bloc.dart';
-import 'package:chat_app/app/view/login/login.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:share_plus/share_plus.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -61,16 +61,14 @@ class _ProfileState extends State<Profile> {
         }
         if (state is LogoutDoneState) {
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ));
+            context,
+            MaterialPageRoute(builder: (context) => AuthenticationScreen()),
+          );
         } else if (state is UserDeletedState) {
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ));
+            context,
+            MaterialPageRoute(builder: (context) => AuthenticationScreen()),
+          );
         }
       },
       builder: (context, state) {
@@ -88,7 +86,7 @@ class _ProfileState extends State<Profile> {
                 Stack(
                   children: [
                     SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.3 + 60,
+                      height: MediaQuery.sizeOf(context).height * 0.4,
                       width: MediaQuery.sizeOf(context).width,
                       child: Opacity(
                         opacity: 0.3,
@@ -107,7 +105,7 @@ class _ProfileState extends State<Profile> {
                           Text(
                             "Profile",
                             style: GoogleFonts.poppins(
-                                fontSize: 32, fontWeight: FontWeight.w600),
+                                fontSize: 30, fontWeight: FontWeight.w600),
                           ),
                           IconButton.filled(
                               style: ButtonStyle(
@@ -127,9 +125,11 @@ class _ProfileState extends State<Profile> {
                       top: 100,
                       left: 130,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            height: 140,
+                            height: MediaQuery.sizeOf(context).height * 0.4 / 2,
                             width: 140,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -176,34 +176,37 @@ class _ProfileState extends State<Profile> {
                                             ),
                                           )),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '$name',
-                                style: GoogleFonts.poppins(
-                                    fontSize: 22, fontWeight: FontWeight.w600),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Verified ",
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.green),
-                                  ),
-                                  Icon(
-                                    Iconsax.tick_circle,
-                                    size: 14,
-                                    color: Colors.green,
-                                  )
-                                ],
-                              )
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '$name',
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Verified ",
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.green),
+                                    ),
+                                    Icon(
+                                      Iconsax.tick_circle,
+                                      size: 14,
+                                      color: Colors.green,
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -211,6 +214,8 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
                 Container(
+                  height: MediaQuery.sizeOf(context).height * 0.5 - 20,
+                  width: MediaQuery.sizeOf(context).width,
                   decoration: BoxDecoration(
                       color: Color(0xFFFFFFFF),
                       borderRadius: const BorderRadius.only(

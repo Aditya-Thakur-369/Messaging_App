@@ -35,12 +35,23 @@ class _MessageTextFieldState extends State<MessageTextField> {
       },
       builder: (context, state) {
         return Container(
-          color: Colors.white,
           padding: const EdgeInsetsDirectional.only(
+            top: 12,
             bottom: 12,
             start: 8,
             end: 8,
           ),
+          decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.white,
+                    blurStyle: BlurStyle.solid,
+                    spreadRadius: 8,
+                    blurRadius: 8)
+              ],
+              color: Color(0xFF5B17FE),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30))),
           child: Expanded(
               child: Column(
             children: [
@@ -51,11 +62,13 @@ class _MessageTextFieldState extends State<MessageTextField> {
                 },
                 minLines: 1,
                 maxLines: 3,
+                // style: TextStyle(color: Colors.white),
+                style: GoogleFonts.poppins(color: Colors.white),
                 decoration: InputDecoration(
                     hintText: "Type Here... ",
                     hintStyle: GoogleFonts.poppins(
-                        color: Colors.grey, fontWeight: FontWeight.w400),
-                    fillColor: Colors.grey[100],
+                        color: Colors.white, fontWeight: FontWeight.w400),
+                    fillColor: const Color(0xFF5B17FE),
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 14, horizontal: 14),
                     filled: true,
@@ -72,7 +85,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
                               });
                             },
                             icon: const Icon(Iconsax.emoji_happy,
-                                color: Colors.grey)),
+                                color: Colors.white)),
                         const SizedBox(
                           width: 6,
                         ),
@@ -93,7 +106,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
                                             friendId: widget.friendId));
                                   },
                                   icon: const Icon(Iconsax.camera,
-                                      color: Colors.grey)),
+                                      color: Colors.white)),
                               IconButton.filled(
                                   style: const ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
@@ -105,15 +118,15 @@ class _MessageTextFieldState extends State<MessageTextField> {
                                             friendId: widget.friendId));
                                   },
                                   icon: state is ChatLoading
-                                      ? SizedBox(
+                                      ? const SizedBox(
                                           height: 30,
                                           width: 30,
                                           child: CircularProgressIndicator(
-                                            color: Colors.grey,
+                                            color: Colors.white,
                                           ),
                                         )
-                                      : Icon(Iconsax.image,
-                                          color: Colors.grey)),
+                                      : const Icon(Iconsax.image,
+                                          color: Colors.white)),
                               IconButton.filled(
                                   style: const ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
@@ -125,7 +138,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
                                             friendId: widget.friendId));
                                   },
                                   icon: const Icon(Iconsax.location,
-                                      color: Colors.grey)),
+                                      color: Colors.white)),
                               // IconButton(
                               //     onPressed: () {
                               //       BlocProvider.of<ChatBloc>(context)
@@ -151,7 +164,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
                               "Send",
                               style: GoogleFonts.poppins(
                                   fontSize: 18,
-                                  color: const Color(0xFF5B17FE),
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w600),
                             )),
                     border: InputBorder.none
@@ -168,7 +181,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
                         textEditingController: controller,
                       ),
                     )
-                  : SizedBox.shrink()
+                  : const SizedBox.shrink()
             ],
           )),
         );

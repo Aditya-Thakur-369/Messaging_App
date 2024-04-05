@@ -163,11 +163,29 @@ class _HomeState extends State<Home> {
                       width: MediaQuery.sizeOf(context).width / 3,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          icondata[index],
-                          color: index == selectedIndex
-                              ? Colors.white
-                              : Colors.grey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              icondata[index],
+                              color: index == selectedIndex
+                                  ? Colors.white
+                                  : Colors.grey,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            Container(
+                              height: 4,
+                              width: 10,
+                              decoration: BoxDecoration(
+                                  color: index == selectedIndex
+                                      ? Colors.white
+                                      : const Color(0xFF5B17FE),
+                                  borderRadius: BorderRadius.circular(30)),
+                            )
+                          ],
                         ),
                       ),
                     ),

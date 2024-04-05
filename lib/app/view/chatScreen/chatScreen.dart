@@ -4,12 +4,15 @@ import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/utils/components/message_textfield.dart';
 import 'package:chat_app/app/utils/components/showimage.dart';
 import 'package:chat_app/app/utils/components/single_message.dart';
+import 'package:chat_app/app/view/util/widgets/bottomfade_animation.dart';
+import 'package:chat_app/app/view/util/widgets/scalefade_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ionicons/ionicons.dart';
@@ -46,7 +49,18 @@ class _ChatScreenState extends State<ChatScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          backgroundColor: Color(0xFF5B17FE),
+          toolbarHeight: 70,
           actions: [
             IconButton(
                 onPressed: () {
@@ -56,8 +70,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 // icon: const Icon(Ionicons.videocam_outline)),
                 icon: const Icon(
                   Iconsax.video4,
-                  color: Colors.grey,
-                  size: 30,
+                  color: Colors.white,
+                  size: 28,
                 )),
             IconButton(
                 onPressed: () {
@@ -67,8 +81,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 // icon: const Icon(Ionicons.videocam_outline)),
                 icon: const Icon(
                   Iconsax.call,
-                  color: Colors.grey,
-                  size: 28,
+                  color: Colors.white,
+                  size: 26,
                 )),
             IconButton(
                 onPressed: () {
@@ -77,49 +91,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
                 icon: const Icon(
                   CupertinoIcons.delete,
-                  color: Colors.grey,
-                  size: 28,
+                  color: Colors.white,
+                  size: 26,
                 )),
-            // PopupMenuButton<String>(
-            //   onSelected: (value) {
-            //     if (value == 'delete') {
-            //       showDialog(
-            //         context: context,
-            //         builder: (BuildContext context) {
-            //           return AlertDialog(
-            //             title: const Text('Delete Conversation'),
-            //             content: const Text(
-            //                 'Are you sure you want to delete this conversation?'),
-            //             actions: [
-            //               TextButton(
-            //                 onPressed: () {
-            //                   Navigator.of(context).pop();
-            //                 },
-            //                 child: const Text('Cancel'),
-            //               ),
-            //               TextButton(
-            //                 onPressed: () {
-            //                   deleteConversation();
-            //                   Navigator.of(context).pop();
-            //                 },
-            //                 child: const Text('Delete'),
-            //               ),
-            //             ],
-            //           );
-            //         },
-            //       );
-            //     }
-            //   },
-            //   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            //     const PopupMenuItem<String>(
-            //       value: 'delete',
-            //       child: ListTile(
-            //         leading: Icon(Ionicons.trash_bin_outline),
-            //         title: Text('Delete'),
-            //       ),
-            //     ),
-            //   ],
-            // )
           ],
           title: Row(
             children: [
@@ -197,14 +171,16 @@ class _ChatScreenState extends State<ChatScreen> {
                   Text(
                     widget.friendName,
                     style: GoogleFonts.poppins(
-                        fontSize: 20, fontWeight: FontWeight.w600),
+                        color: const Color.fromRGBO(255, 255, 255, 1),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600),
                   ),
                   Text(
                     "Online",
                     style: GoogleFonts.poppins(
                         color: Colors.green,
                         fontSize: 12,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w600),
                   )
                 ],
               )
@@ -215,12 +191,20 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(10),
+                // height: MediaQuery.sizeOf(context).height,
+                padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
                 decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color(0xFF5B17FE),
+                        blurStyle: BlurStyle.solid,
+                        blurRadius: 20,
+                        spreadRadius: 20)
+                  ],
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
                 ),
                 child: StreamBuilder(
@@ -323,11 +307,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                   .doc(data.id)
                                   .delete();
                             },
-                            child: SingleMessage(
-                                currentTime: snapshot.data.docs[index]['date'],
-                                type: snapshot.data.docs[index]['type'],
-                                message: snapshot.data.docs[index]['message'],
-                                isMe: isMe),
+                            child: ScaleFadeAnimation(
+                              delay: 2,
+                              child: SingleMessage(
+                                  currentTime: snapshot.data.docs[index]
+                                      ['date'],
+                                  type: snapshot.data.docs[index]['type'],
+                                  message: snapshot.data.docs[index]['message'],
+                                  isMe: isMe),
+                            ),
                           );
                         },
                       );
