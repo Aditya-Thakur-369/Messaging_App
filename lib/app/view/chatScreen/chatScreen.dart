@@ -168,12 +168,16 @@ class _ChatScreenState extends State<ChatScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.friendName,
-                    style: GoogleFonts.poppins(
-                        color: const Color.fromRGBO(255, 255, 255, 1),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      widget.friendName,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                          color: const Color.fromRGBO(255, 255, 255, 1),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                   Text(
                     "Online",
@@ -307,15 +311,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                   .doc(data.id)
                                   .delete();
                             },
-                            child: ScaleFadeAnimation(
-                              delay: 2,
-                              child: SingleMessage(
-                                  currentTime: snapshot.data.docs[index]
-                                      ['date'],
-                                  type: snapshot.data.docs[index]['type'],
-                                  message: snapshot.data.docs[index]['message'],
-                                  isMe: isMe),
-                            ),
+                            child: SingleMessage(
+                                currentTime: snapshot.data.docs[index]['date'],
+                                type: snapshot.data.docs[index]['type'],
+                                message: snapshot.data.docs[index]['message'],
+                                isMe: isMe),
                           );
                         },
                       );

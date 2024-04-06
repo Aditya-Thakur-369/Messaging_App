@@ -7,14 +7,11 @@ import 'package:chat_app/app/view/util/widgets/scalefade_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/app/controller/chat/bloc/chat_bloc.dart';
 import 'package:chat_app/app/view/chatScreen/chatScreen.dart';
 import 'package:chat_app/app/view/search/Search.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -71,6 +68,7 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.sizeOf(context).height;
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is NavigatedSearchPageDoneState) {
@@ -84,108 +82,135 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
         }
       },
       child: Scaffold(
-        backgroundColor: Color(0xFFf0f8ff),
-        // appBar: AppBar(
-        // backgroundColor: Color(0xFF5B17FE),
-        // actions: [
-        //   const SizedBox(
-        //     width: 30,
-        //   ),
-        //   // Container(
-        //   //   height: 40,
-        //   //   width: 40,
-        //   //   decoration: const BoxDecoration(
-        //   //       color: Color(0xFF5B17FE), shape: BoxShape.circle),
-        //   //   child: const Center(
-        //   //     child: Icon(Iconsax.profile_circle, color: Colors.white),
-        //   //   ),
-        //   // ),
-        //   // const Spacer(),
-        //   Text(
-        //     "Chats",
-        //     style: GoogleFonts.poppins(
-        //         fontSize: 22, fontWeight: FontWeight.w600),
-        //   ),
-        //   const Spacer(),
-        //   IconButton(
-        //       onPressed: () {},
-        //       icon: const Icon(
-        //         Iconsax.notification,
-        //         color: Color(0xFF5B17FE),
-        //       )),
-        //   const SizedBox(
-        //     width: 20,
-        //   ),
-        // ],
-        // ),
+        backgroundColor: const Color(0xFFf0f8ff),
         body: Stack(
           children: [
-            Positioned(
-              top: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                height: 160,
-                width: MediaQuery.sizeOf(context).width,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    const BoxShadow(
-                      color: Color(0xFF5B17FE),
-                      blurStyle: BlurStyle.outer,
-                      blurRadius: 1,
-                    )
-                  ],
-                  border: Border.all(color: const Color(0xFF5B17FE)),
-                  color: const Color(0xFF5B17FE),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 30,
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) =>
+                  constraints.maxHeight < 720
+                      ? Positioned(
+                          top: 0,
+                          right: 0,
+                          left: 0,
+                          child: Container(
+                            height: MediaQuery.sizeOf(context).height * 0.9,
+                            width: MediaQuery.sizeOf(context).width,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                const BoxShadow(
+                                  color: Color(0xFF5B17FE),
+                                  blurStyle: BlurStyle.outer,
+                                  blurRadius: 1,
+                                )
+                              ],
+                              border:
+                                  Border.all(color: const Color(0xFF5B17FE)),
+                              color: const Color(0xFF5B17FE),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Iconsax.menu5,
+                                          color: Colors.white,
+                                        )),
+                                    Spacer(),
+                                    Text(
+                                      "Messages",
+                                      style: GoogleFonts.montserrat(
+                                          color: Colors.white,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    const Spacer(),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Iconsax.notification,
+                                          color: Colors.white,
+                                        )),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: MediaQuery.sizeOf(context).height,
+                          width: MediaQuery.sizeOf(context).width,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              const BoxShadow(
+                                color: Color(0xFF5B17FE),
+                                blurStyle: BlurStyle.outer,
+                                blurRadius: 1,
+                              )
+                            ],
+                            border: Border.all(color: const Color(0xFF5B17FE)),
+                            color: const Color(0xFF5B17FE),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Iconsax.menu5,
+                                        color: Colors.white,
+                                      )),
+                                  const Spacer(),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Iconsax.notification,
+                                        color: Colors.white,
+                                      )),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 40, top: 0, bottom: 10),
+                                child: Text(
+                                  "Messages",
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Iconsax.menu5,
-                              color: Colors.white,
-                            )),
-                        const Spacer(),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Iconsax.notification,
-                              color: Colors.white,
-                            )),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40, top: 8),
-                      child: Text(
-                        "Messages",
-                        style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
             Positioned(
-              bottom: -MediaQuery.sizeOf(context).height / 4,
+              bottom: -height / 4,
               left: 0,
               right: 0,
-              child: Flexible(
+              child: Expanded(
                 child: Container(
                   height: MediaQuery.sizeOf(context).height,
                   width: MediaQuery.sizeOf(context).width,

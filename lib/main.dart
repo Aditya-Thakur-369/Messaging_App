@@ -132,7 +132,7 @@ void main() async {
           create: (context) => StatusBloc(),
         ),
       ],
-      child: const MyApp(),
+      child: (const MyApp()),
     ),
   );
 }
